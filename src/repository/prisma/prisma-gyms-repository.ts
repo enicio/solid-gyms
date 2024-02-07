@@ -17,7 +17,6 @@ export class PrismaGymsRepository implements GymsRepository {
     const gym = await prisma.gym.create({
       data,
     })
-
     return gym
   }
 
@@ -49,10 +48,9 @@ export class PrismaGymsRepository implements GymsRepository {
   async getNearby(params: getNearbyRequest) {
     const { latitude, longitude } = params
     const gyms = await prisma.$queryRaw<Gym[]>`
-        SELECT * FROM gyms
-        WHERE ( 6371 * acos( cos( radians(${latitude}) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(${longitude}) ) + sin( radians(${latitude}) ) * sin( radians( latitude ) ) ) ) <= 10
+      SELECT * from gyms
+      WHERE ( 6371 * acos( cos( radians(${latitude}) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(${longitude}) ) + sin( radians(${latitude}) ) * sin( radians( latitude ) ) ) ) <= 10
     `
-
     return gyms
   }
 }

@@ -4,15 +4,16 @@ import { makeNearByGymsUseCase } from '@/use-cases/factories/make-near-by-gyms'
 
 export async function nearby(request: FastifyRequest, reply: FastifyReply) {
   const nearByGymsQuerySchema = z.object({
-    latitude: z.number().refine((value) => value >= -90 && value <= 90),
-    longitude: z.number().refine((value) => value >= -180 && value <= 180),
+    latitude: z.coerce.number().refine((value) => value >= -90 && value <= 90),
+    longitude: z.coerce
+      .number()
+      .refine((value) => value >= -180 && value <= 180),
   })
 
-  const { latitude, longitude } = nearByGymsQuerySchema.parse(request.body)
-
+  const { latitude, longitude } = nearByGymsQuerySchema.parse(request.query)
   const nearByGymsUseCase = makeNearByGymsUseCase()
 
-  const gyms = await nearByGymsUseCase.execute({
+  const { gyms } = await nearByGymsUseCase.execute({
     latitude,
     longitude,
   })
