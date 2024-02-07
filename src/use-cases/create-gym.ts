@@ -2,7 +2,7 @@ import { Gym } from '@prisma/client'
 import { GymsRepository } from '@/repository/gyms-repository'
 
 interface CreateGymUseCaseRequest {
-  id: string
+  id?: string
   title: string
   description: string | null
   phone: string | null
